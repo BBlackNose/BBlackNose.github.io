@@ -2,12 +2,9 @@
 title: "Dreamhack XSS Filtering Bypass Advanced 풀이"
 date: 2026-01-20
 categories:
-  - CTF
-  - Web Hacking
+  - CTF, Web Hacking
 tags:
-  - XSS
-  - Bypass
-  - Dreamhack
+  - XSS, Bypass, Dreamhack
 ---
 
 ### 안녕하세요, BlackNose입니다.
