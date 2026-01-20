@@ -12,6 +12,7 @@ tags:
 **Date:** 2026-01-20  
 **Category:** Web Hacking  
 **Exploit Type:** Blind Command Injection, Method Override
+**NOTICE:** 이글은 테스트 목적으로 AI로 작성하였습니다.
 
 ## 1. Problem Analysis
 
