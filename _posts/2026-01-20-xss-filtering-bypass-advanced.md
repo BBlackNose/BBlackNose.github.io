@@ -11,8 +11,6 @@ tags:
 
 오늘은 Dreamhack의 **XSS Filtering Bypass Advanced** 문제를 푼 과정을 정리해보려고 합니다. 이 문제는 강력한 필터링이 걸려있는 환경에서 어떻게 XSS(Cross Site Scripting)를 터트리고, 관리자의 쿠키(Flag)를 탈취할 수 있는지 묻는 문제였습니다.
 
----
-
 
 ### 1. 문제 분석 (Why?)
 
