@@ -12,16 +12,16 @@
 
 # theme                  : "minimal-mistakes-jekyll"
 # remote_theme           : "mmistakes/minimal-mistakes"
-minimal_mistakes_skin    : "default" # "air", "aqua", "contrast", "dark", "dirt", "neon", "mint", "plum", "sunrise"
+minimal_mistakes_skin    : "neon" # "air", "aqua", "contrast", "dark", "dirt", "neon", "mint", "plum", "sunrise"
 
 # Site Settings
 locale                   : "en-US"
 rtl                      : # true, false (default) # turns direction of the page into right to left for RTL languages
-title                    : "BlackNose CTF"
-title_separator          : "-"
-subtitle                 : # site tagline that appears below site title in masthead
-name                     : "BlackNose"
-description              : "An amazing website."
+title                    : "BBlackNose Archive"
+title_separator          : " | "
+subtitle                 : "Security Engineering & CTF"
+name                     : "BBlackNose"
+description              : "A specialized archive for decrypted vulnerabilities and cyber artifacts."
 url                      : "https://BBlackNose.github.io"
 baseurl                  : ""
 repository               : # GitHub username/repo-name e.g. "mmistakes/minimal-mistakes"
@@ -113,30 +113,18 @@ analytics:
 
 # Site Author
 author:
-  name             : "Your Name"
-  avatar           : # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
-  bio              : "I am an **amazing** person."
-  location         : "Somewhere"
-  email            :
+  name             : "BBlackNose"
+  avatar           : "/assets/images/bio-photo.jpg" # Placeholder, update if you have one
+  bio              : "Security Engineer | CTF Player | Bug Hunter"
+  location         : "In the Shell"
+  email            : "bblacknose@security.archive"
   links:
-    - label: "Email"
-      icon: "fas fa-fw fa-envelope-square"
-      # url: "mailto:your.name@email.com"
-    - label: "Website"
-      icon: "fas fa-fw fa-link"
-      # url: "https://your-website.com"
-    - label: "Twitter"
-      icon: "fab fa-fw fa-twitter-square"
-      # url: "https://twitter.com/"
-    - label: "Facebook"
-      icon: "fab fa-fw fa-facebook-square"
-      # url: "https://facebook.com/"
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
-      # url: "https://github.com/"
-    - label: "Instagram"
-      icon: "fab fa-fw fa-instagram"
-      # url: "https://instagram.com/"
+      url: "https://github.com/BBlackNose"
+    - label: "Dreamhack"
+      icon: "fas fa-fw fa-flag"
+      url: "https://dreamhack.games"
 
 # Site Footer
 footer:
