@@ -1,19 +1,25 @@
+# ==========================================
+# BBlackNose Archive - Custom Configuration
+# ==========================================
+
 # Site Settings
-title: "BBlackNose Archive"
+title: "BBlackNose // Cyber Archive"
 locale: "ko-KR"
-description: "Security Engineering & CTF Artifacts"
+description: "Decrypted CTF write-ups and security engineering artifacts."
 url: "https://BBlackNose.github.io"
-baseurl: ""
+baseurl: "" # "/"로 설정하지 마세요. 비워두는 것이 가장 안전합니다.
+repository: "BBlackNose/BBlackNose.github.io"
 
 # Theme Settings
-remote_theme: "mmistakes/minimal-mistakes"
+remote_theme: "mmistakes/minimal-mistakes@4.24.0" # 명시적 버전 지정으로 안정성 확보
 minimal_mistakes_skin: "neon"
 
-# Author
+# Author Information
 author:
   name: "BBlackNose"
-  bio: "Security Engineer | CTF Player"
-  location: "In the Shell"
+  bio: "Security Engineer | Exploitation Specialist"
+  location: "Digital Void"
+  avatar: "https://github.com/BBlackNose.png" # GitHub 프로필 이미지 자동 연동
   links:
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
@@ -22,15 +28,30 @@ author:
       icon: "fas fa-fw fa-flag"
       url: "https://dreamhack.games"
 
-# Plugins
+# Build Settings
+markdown: kramdown
+highlighter: rouge
 plugins:
   - jekyll-paginate
   - jekyll-sitemap
   - jekyll-gist
   - jekyll-feed
   - jekyll-include-cache
+  - jekyll-remote-theme
 
-# Defaults
+# Pagination
+paginate: 5
+paginate_path: /page:num/
+
+# Taxonomy
+category_archive:
+  type: liquid
+  path: /categories/
+tag_archive:
+  type: liquid
+  path: /tags/
+
+# Default Values
 defaults:
   - scope:
       path: ""
@@ -42,11 +63,4 @@ defaults:
       comments: true
       share: true
       related: true
-
-# Taxonomy
-category_archive:
-  type: liquid
-  path: /categories/
-tag_archive:
-  type: liquid
-  path: /tags/
+      show_date: true

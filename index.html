@@ -3,9 +3,42 @@ layout: home
 author_profile: true
 ---
 
-<div style="background: #121318; padding: 15px; border-radius: 8px; border: 1px solid #7c5cff; margin-bottom: 25px; font-family: monospace;">
-  <span style="color: #2ecc71;">[SYSTEM]</span> Initializing Archive Access...<br>
-  <span style="color: #7c5cff;">></span> Accessing BBlackNose's Decrypted Archives... [SUCCESS]
+<style>
+  .terminal-intro {
+    background: #121318;
+    border: 1px solid #7c5cff;
+    padding: 20px;
+    border-radius: 10px;
+    font-family: 'Courier New', Courier, monospace;
+    margin-bottom: 30px;
+    position: relative;
+    overflow: hidden;
+  }
+  .terminal-intro::after {
+    content: "|";
+    color: #7c5cff;
+    animation: blink 1s infinite;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+  
+  .status-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: bold;
+    margin-right: 10px;
+  }
+  .status-online { background: #2ecc71; color: #000; }
+</style>
+
+<div class="terminal-intro">
+  <div style="color: #2ecc71; margin-bottom: 10px;">[SYSTEM] BOOT SEQUENCE COMPLETE</div>
+  <div style="color: #e8ebf1;">
+    <span class="status-badge status-online">ONLINE</span> 
+    ROOT ACCESS GRANTED TO BBLACKNOSE ARCHIVE...
+  </div>
+  <div style="color: #7c5cff; margin-top: 10px;">> DECRYPTING LATEST INTELLIGENCE...</div>
 </div>
 
-### 🛡️ Decrypted Intelligence Reports
+## 🛡️ MISSION LOGS

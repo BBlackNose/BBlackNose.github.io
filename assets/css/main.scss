@@ -3,29 +3,64 @@
 
 @charset "utf-8";
 
-@import "minimal-mistakes/skins/neon";
+/* [EXPERT] 테마의 SCSS를 먼저 불러온 후 커스텀 스타일을 덮어씌웁니다. */
+@import "minimal-mistakes/skins/neon"; 
 @import "minimal-mistakes";
 
-/* Custom Cyberpunk Styles */
+/* 
+   CYBER-ARTIFACT THEME OVERRIDES 
+   -------------------------------
+*/
 :root {
-  --neon-purple: #7c5cff;
-  --neon-green: #2ecc71;
+  --neon-primary: #7c5cff;
+  --neon-accent: #2ecc71;
+  --dark-void: #0b0c10;
+  --terminal-bg: #121318;
 }
 
 body {
-  background-color: #0b0c10 !important;
+  background-color: var(--dark-void) !important;
+  color: #e8ebf1 !important;
+  font-family: 'JetBrains Mono', 'Fira Code', monospace; /* 개발자용 폰트 선호 */
 }
 
+/* 헤더 광채 효과 */
 .masthead {
-  border-bottom: 2px solid var(--neon-purple) !important;
-  box-shadow: 0 0 10px var(--neon-purple);
+  border-bottom: 2px solid var(--neon-primary) !important;
+  background: rgba(18, 19, 24, 0.95) !important;
+  box-shadow: 0 4px 20px rgba(124, 92, 255, 0.3);
 }
 
-.page__title, h1, h2 {
-  color: var(--neon-purple) !important;
-  text-shadow: 0 0 5px var(--neon-purple);
+/* 제목 네온 텍스트 */
+.page__title, h1, h2, h3 {
+  color: var(--neon-primary) !important;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-shadow: 0 0 8px rgba(124, 92, 255, 0.6);
 }
 
-code, pre {
-  border: 1px solid var(--neon-green) !important;
+/* 링크 효과 */
+a {
+  color: var(--neon-accent) !important;
+  transition: all 0.2s ease;
+  &:hover {
+    text-shadow: 0 0 5px var(--neon-accent);
+    text-decoration: none !important;
+  }
+}
+
+/* 코드 블록 터미널 스타일 */
+.highlight, code, pre {
+  background: var(--terminal-bg) !important;
+  border: 1px solid var(--neon-primary) !important;
+  border-radius: 8px;
+}
+
+/* 커스텀 터미널 알림 창 */
+.notice--terminal {
+  background: var(--terminal-bg);
+  border-left: 4px solid var(--neon-primary);
+  padding: 1em;
+  margin: 1em 0;
+  font-family: monospace;
 }
