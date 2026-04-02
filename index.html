@@ -3,22 +3,9 @@ layout: home
 author_profile: true
 ---
 
-<div id="terminal-header" style="background: #121318; padding: 20px; border-radius: 10px; border: 1px solid var(--neon-purple); margin-bottom: 30px; font-family: 'Courier New', Courier, monospace;">
-  <div style="color: var(--neon-green); margin-bottom: 10px;">[SYSTEM] Initializing Archive Access...</div>
-  <div id="typing-text" style="color: #e8ebf1; min-height: 1.5em;"></div>
+<div style="background: #121318; padding: 15px; border-radius: 8px; border: 1px solid #7c5cff; margin-bottom: 25px; font-family: monospace;">
+  <span style="color: #2ecc71;">[SYSTEM]</span> Initializing Archive Access...<br>
+  <span style="color: #7c5cff;">></span> Accessing BBlackNose's Decrypted Archives... [SUCCESS]
 </div>
 
-<script>
-  const text = "> Accessing BBlackNose's Decrypted Archives... [SUCCESS]";
-  let i = 0;
-  function type() {
-    if (i < text.length) {
-      document.getElementById("typing-text").innerHTML += text.charAt(i);
-      i++;
-      setTimeout(type, 50);
-    }
-  }
-  window.onload = type;
-</script>
-
-<h3 style="border-bottom: 1px solid var(--neon-purple); padding-bottom: 10px;">🛡️ Latest Intelligence Reports</h3>
+### 🛡️ Decrypted Intelligence Reports
