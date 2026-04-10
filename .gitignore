@@ -1,0 +1,21 @@
+# CTF Problem Files
+*.zip
+704a6338-*/
+e99b0f9e-*/
+06a33118-*/
+deploy/
+
+# Exploit Scripts
+exploit.py
+solve.py
+solve_final.py
+test_resp.py
+find_pid.py
+
+# Temporary/Cache Files
+*.db
+__pycache__/
+*.log
+.DS_Store
+.gemini/
+GEMINI.md
