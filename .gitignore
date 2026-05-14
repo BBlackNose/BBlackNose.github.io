@@ -1,21 +1,7 @@
-# CTF Problem Files
-*.zip
-704a6338-*/
-e99b0f9e-*/
-06a33118-*/
-deploy/
-
-# Exploit Scripts
-exploit.py
-solve.py
-solve_final.py
-test_resp.py
-find_pid.py
-
-# Temporary/Cache Files
-*.db
-__pycache__/
-*.log
-.DS_Store
+# [PRIVATE] 절대 GitHub에 올리지 않을 항목들
+ctf/
+gemini/
 .gemini/
+*.zip
 GEMINI.md
+*.py
