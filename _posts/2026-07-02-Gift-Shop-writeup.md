@@ -12,15 +12,11 @@ tags:
 해당 웹페이지는 평소에는 다음과 같은 순서로 작동한다
 1. 입장권 발급
 
-
 2. 쿠폰 발급
-![image.png](https://dreamhack-media.s3.amazonaws.com/attachments/14694c6fd4ad67f12bb6983df7df8b513dc23dc99752b845d7ff872db568f7ed.png)
 
 3. 쿠폰 등록
-![image.png](https://dreamhack-media.s3.amazonaws.com/attachments/af1cc06f537dc64cc5da17f4d97cd6acc257584a03a7a41100e6d849a4cf3117.png)
 
 4. 상품 구매
-![image.png](https://dreamhack-media.s3.amazonaws.com/attachments/cac905c2b8312f19901b2c697842818d2653fe551da0e2a05a49a98596529b07.png)
 
 그러나 한 입장권 당 쿠폰은 한번만 사용할 수 있고 이후에는 추가 쿠폰 발급 및 추가 쿠폰 사용이 불가능하다.
 
@@ -30,7 +26,30 @@ tags:
 읽다보면 계속 본것과 같은 메커니즘으로 작동한다는 것을 알 수 있고 prepared statement를 잘 활용하고 있어 sql injection은 안될 것 같다.
 
 그런데 이벤트 쿠폰을 등록하는 부분을 보면 이상한 점이 있다.
-![image.png](https://dreamhack-media.s3.amazonaws.com/attachments/490438b5bca8cc091b3a5d863dbb7536db7d069619afb725538fcc30dd718fe6.png)
+```
+if ($used == 0 && $regcup == 1) {
+                            echo "<script>alert('이벤트 쿠폰은 입장권당 1개만 사용 가능합니다.');hideModal();</script>";
+                        } elseif ($used == 0) {
+                            $stmt_update_point = $conn->prepare("UPDATE entry SET point = point + 10000 WHERE number = ?");
+                            $stmt_update_point->bind_param("s", $ticket_number);
+                            $stmt_update_point->execute();
+                            $stmt_update_point->close();
+                            echo "<script>hideModal();</script><div class='result'>포인트가 10000 증가했습니다.</div>";
+                            $stmt_protect_flow = $conn->prepare("SELECT SLEEP(3)");
+                            $stmt_protect_flow->execute();
+                            $stmt_protect_flow->close();
+                            $stmt_update_point = $conn->prepare("UPDATE entry SET regcup = 1 WHERE number = ?");
+                            $stmt_update_point->bind_param("s", $ticket_number);
+                            $stmt_update_point->execute();
+                            $stmt_update_point->close();
+                            $stmt_update_coupon = $conn->prepare("UPDATE cuppon SET used = 1 WHERE number = ?");
+                            $stmt_update_coupon->bind_param("s", $coupon_number);
+                            $stmt_update_coupon->execute();
+                            $stmt_update_coupon->close();
+                        } elseif ($used == 1) {
+                            echo "<script>alert('이미 사용된 쿠폰입니다.');hideModal();</script>";
+```
+
 
 포인트를 증가시키는 것과 regcup, used 값을 설정하는 것 사이에 sleep(3) 구문이 있다.
 즉 3초안에 다량의 패킷을 보내면 이미 사용한 쿠폰으로 등록되기 전에 쿠폰을 중복해서 사용할 수 있을 것으로 보인다. 이를 바탕으로 파이썬 스크립트를 작성해서 실행시키면 플래그를 얻을 수 있다.
